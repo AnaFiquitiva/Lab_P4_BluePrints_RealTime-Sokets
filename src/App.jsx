@@ -2,15 +2,15 @@ import { useEffect, useRef, useState } from 'react'
 import { createStompClient, subscribeBlueprint } from './lib/stompClient.js'
 import { createSocket } from './lib/socketIoClient.js'
 
-const API_BASE = import.meta.env.VITE_API_BASE ?? 'http://localhost:8080' // Spring
-const IO_BASE  = import.meta.env.VITE_IO_BASE  ?? 'http://localhost:3001' // Node/Socket.IO
+const API_BASE = import.meta.env.VITE_API_BASE ?? 'http://localhost:8080'
+const IO_BASE  = import.meta.env.VITE_IO_BASE  ?? 'http://localhost:3001'
 
 export default function App() {
   const [tech, setTech] = useState('stomp')
   const [author, setAuthor] = useState('juan')
   const [name, setName] = useState('plano-1')
   
-  // Dashboard state
+  
   const [blueprintsList, setBlueprintsList] = useState([])
   const [totalPoints, setTotalPoints] = useState(0)
   const [currentBlueprint, setCurrentBlueprint] = useState(null)
@@ -21,7 +21,7 @@ export default function App() {
   const unsubRef = useRef(null)
   const socketRef = useRef(null)
 
-  // Fetch Blueprints List when author changes
+  
   useEffect(() => {
     if (!author) return;
     fetchBlueprintsList(author);
@@ -35,7 +35,7 @@ export default function App() {
         const data = await res.json();
         setBlueprintsList(data);
         
-        // Calculate total points
+        
         const total = data.reduce((acc, bp) => acc + (bp.points?.length || 0), 0);
         setTotalPoints(total);
       } else {
@@ -49,7 +49,7 @@ export default function App() {
     }
   }
 
-  // Fetch specific Blueprint when name/author changes
+  
   useEffect(() => {
     if (!author || !name) return;
     const baseUrl = tech === 'stomp' ? API_BASE : IO_BASE;
@@ -82,7 +82,7 @@ export default function App() {
     ctx.stroke()
   }
 
-  // Real-Time connections
+  
   useEffect(() => {
     unsubRef.current?.(); unsubRef.current = null
     stompRef.current?.deactivate?.(); stompRef.current = null
@@ -93,12 +93,10 @@ export default function App() {
       stompRef.current = client
       client.onConnect = () => {
         unsubRef.current = subscribeBlueprint(client, author, name, (upd) => {
-          // If the server sends the full blueprint
           if (upd.points) {
             setCurrentBlueprint(upd);
             drawAll(upd)
           } 
-          // If the server only sends the new point
           else if (upd.x !== undefined && upd.y !== undefined) {
              setCurrentBlueprint(prev => {
                 const newBp = { ...prev, points: [...(prev?.points || []), upd] };
@@ -134,19 +132,17 @@ export default function App() {
     }
   }, [tech, author, name])
 
-  // Canvas Click
+  
   function onClick(e) {
     if (!currentBlueprint) return;
     
     const rect = e.target.getBoundingClientRect()
     const point = { x: Math.round(e.clientX - rect.left), y: Math.round(e.clientY - rect.top) }
 
-    // Update local state and draw immediately for better UX
     const updatedBp = { ...currentBlueprint, points: [...(currentBlueprint.points || []), point] };
     setCurrentBlueprint(updatedBp);
     drawAll(updatedBp);
 
-    // Broadcast
     if (tech === 'stomp' && stompRef.current?.connected) {
       stompRef.current.publish({ destination: '/app/draw', body: JSON.stringify({ author, name, point }) })
     } else if (tech === 'socketio' && socketRef.current?.connected) {
@@ -155,7 +151,7 @@ export default function App() {
     }
   }
 
-  // CRUD Operations
+  
   const handleCreateBlueprint = async () => {
     const newName = prompt("Enter new blueprint name:");
     if (!newName) return;
@@ -182,7 +178,7 @@ export default function App() {
       await fetch(`${baseUrl}/api/blueprints/${author}/${name}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(currentBlueprint) // Send the current state
+        body: JSON.stringify(currentBlueprint)
       });
       alert('Blueprint saved!');
       fetchBlueprintsList(author);
@@ -213,7 +209,7 @@ export default function App() {
   return (
     <div style={{fontFamily:'Inter, system-ui', padding:24, maxWidth:1200, margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '20px'}}>
       
-      {/* Header & Controls */}
+  
       <div style={{display:'flex', gap:20, alignItems:'center', background: '#f5f5f5', padding: '16px', borderRadius: '8px'}}>
         <div>
            <h2 style={{margin: 0, color: '#333'}}>BluePrints RT</h2>
@@ -230,7 +226,7 @@ export default function App() {
       </div>
 
       <div style={{display: 'flex', gap: '20px', alignItems: 'flex-start'}}>
-        {/* Left Panel - Blueprints List */}
+  
         <div style={{flex: '1', minWidth: '300px', background: '#fff', border: '1px solid #ddd', borderRadius: '8px', padding: '16px'}}>
           <div style={{display: 'flex', gap: '8px', marginBottom: '16px', alignItems: 'center'}}>
              <label style={{fontWeight: 'bold'}}>Author:</label>
@@ -267,7 +263,7 @@ export default function App() {
           <button onClick={handleCreateBlueprint} style={{padding: '8px 12px', background: '#17a2b8', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', width: '100%'}}>Create New Blueprint</button>
         </div>
 
-        {/* Right Panel - Canvas */}
+  
         <div style={{flex: '2'}}>
            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px'}}>
               <h3 style={{margin: 0}}>Current Blueprint: {name || 'None'}</h3>
