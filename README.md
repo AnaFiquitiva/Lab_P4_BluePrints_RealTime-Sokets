@@ -6,7 +6,7 @@
 > - **Socket.IO (Node.js):** https://github.com/DECSIS-ECI/example-backend-socketio-node-/blob/main/README.md
 > - **STOMP (Spring Boot):** https://github.com/DECSIS-ECI/example-backend-stopm/tree/main
 
-## 🎯 Objetivo del laboratorio
+## Objetivo del laboratorio
 Implementar **colaboración en tiempo real** para el caso de BluePrints. El Front consume la API CRUD de la Parte 3 (o equivalente) y habilita tiempo real usando **Socket.IO** o **STOMP**, para que múltiples clientes dibujen el mismo plano de forma simultánea.
 
 Al finalizar, el equipo debe:
@@ -16,7 +16,7 @@ Al finalizar, el equipo debe:
 
 ---
 
-## 🧩 Alcance y criterios funcionales
+## Alcance y criterios funcionales
 - **CRUD** (REST):
   - `GET /api/blueprints?author=:author` → lista por autor (incluye total de puntos).
   - `GET /api/blueprints/:author/:name` → puntos del plano.
@@ -34,7 +34,7 @@ Al finalizar, el equipo debe:
 
 ---
 
-## 🏗️ Arquitectura (visión rápida)
+## Arquitectura (visión rápida)
 
 ```
 React (Vite)
@@ -50,7 +50,7 @@ React (Vite)
 
 ---
 
-## 📦 Repos guía (clona/consulta)
+## Repos guía (clona/consulta)
 - **Socket.IO (Node.js)**: https://github.com/DECSIS-ECI/example-backend-socketio-node-/blob/main/README.md  
   - *Uso típico en el cliente:* `io(VITE_IO_BASE, { transports: ['websocket'] })`, `join-room`, `draw-event`, `blueprint-update`.
 - **STOMP (Spring Boot)**: https://github.com/DECSIS-ECI/example-backend-stopm/tree/main  
@@ -58,7 +58,7 @@ React (Vite)
 
 ---
 
-## ⚙️ Variables de entorno (Front)
+## Variables de entorno (Front)
 Crea `.env.local` en la raíz del proyecto **Front**:
 ```bash
 # REST (tu backend CRUD)
@@ -72,7 +72,7 @@ En la UI, selecciona la tecnología en el **selector RT**.
 
 ---
 
-## 🚀 Puesta en marcha
+## Puesta en marcha
 
 ### 1) Backend RT (elige uno)
 
@@ -106,7 +106,7 @@ En la interfaz: selecciona **Socket.IO** o **STOMP**, define `author` y `name`, 
 
 ---
 
-## 🔌 Protocolos de Tiempo Real (detalle mínimo)
+## Protocolos de Tiempo Real (detalle mínimo)
 
 ### A) Socket.IO
 - **Unirse a sala**
@@ -134,7 +134,7 @@ En la interfaz: selecciona **Socket.IO** o **STOMP**, define `author` y `name`, 
 
 ---
 
-## 🧪 Casos de prueba mínimos
+## Casos de prueba mínimos
 - **Estado inicial**: al seleccionar plano, el canvas carga puntos (`GET /api/blueprints/:author/:name`).  
 - **Dibujo local**: clic en canvas agrega puntos y redibuja.  
 - **RT multi-pestaña**: con 2 pestañas, los puntos se **replican** casi en tiempo real.  
@@ -142,14 +142,14 @@ En la interfaz: selecciona **Socket.IO** o **STOMP**, define `author` y `name`, 
 
 ---
 
-## 📊 Entregables del equipo
+## Entregables del equipo
 1. Código del Front integrado con **CRUD** y **RT** (Socket.IO o STOMP).  
 2. **Video corto** (≤ 90s) mostrando colaboración en vivo y operaciones CRUD.  
 3. **README del equipo**: setup, endpoints usados, decisiones (rooms/tópicos), y (opcional) breve comparativa Socket.IO vs STOMP.
 
 ---
 
-## 🧮 Rúbrica sugerida
+## Rúbrica sugerida
 - **Funcionalidad (40%)**: RT estable (join/broadcast), aislamiento por plano, CRUD operativo.  
 - **Calidad técnica (30%)**: estructura limpia, manejo de errores, documentación clara.  
 - **Observabilidad/DX (15%)**: logs útiles (conexión, eventos), health checks básicos.  
@@ -157,7 +157,7 @@ En la interfaz: selecciona **Socket.IO** o **STOMP**, define `author` y `name`, 
 
 ---
 
-## 🩺 Troubleshooting
+## Troubleshooting
 - **Pantalla en blanco (Front)**: revisa consola; confirma `@vitejs/plugin-react` instalado y que `AppP4.jsx` esté en `src/`.  
 - **No hay broadcast**: ambas pestañas deben hacer `join-room` al **mismo** plano (Socket.IO) o suscribirse al **mismo tópico** (STOMP).  
 - **CORS**: en dev permite `http://localhost:5173`; en prod, **restringe orígenes**.  
@@ -166,12 +166,12 @@ En la interfaz: selecciona **Socket.IO** o **STOMP**, define `author` y `name`, 
 
 ---
 
-## 🔐 Seguridad (mínimos)
+## Seguridad (mínimos)
 - Validación de payloads (p. ej., zod/joi).  
 - Restricción de orígenes en prod.  
 - Opcional: **JWT** + autorización por plano/sala.
 
 ---
 
-## 📄 Licencia
+## Licencia
 MIT (o la definida por el curso/equipo).
