@@ -6,7 +6,6 @@ Este proyecto implementa una solución de colaboración en tiempo real para la g
 
 ### Integrantes
 * **Ana Fiquitiva**
-* **Juan Valero** (Colaborador)
 
 ### Evidencia de Funcionamiento
 
