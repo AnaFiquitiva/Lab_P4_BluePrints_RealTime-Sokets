@@ -28,7 +28,7 @@ Equipos de arquitectos, ingenieros o disenadores que necesitan colaborar en plan
 | Nombre | Rol |
 |--------|-----|
 | **Ana Fiquitiva** | Desarrolladora Principal |
-| **Juan Valero** | Colaborador |
+|  |  |
 
 ---
 
