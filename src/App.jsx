@@ -111,8 +111,15 @@ export default function App() {
       const s = createSocket(IO_BASE)
       socketRef.current = s
       const room = `blueprints.${author}.${name}`
-      s.emit('join-room', room)
+      
+      // ESPERAR a que esté conectado antes de hacer cualquier cosa
+      s.on('connect', () => {
+        console.log('[Socket.IO] Conectado! Uniéndose a sala:', room)
+        s.emit('join-room', room)
+      })
+      
       s.on('blueprint-update', (upd) => {
+          console.log('[Socket.IO] blueprint-update recibido:', upd)
           if (upd.points) {
              setCurrentBlueprint(upd);
              drawAll(upd);
@@ -124,7 +131,16 @@ export default function App() {
              });
           }
       })
+      
+      s.on('connect_error', (err) => {
+        console.error('[Socket.IO] Error de conexión:', err)
+      })
+      
+      s.on('disconnect', () => {
+        console.log('[Socket.IO] Desconectado')
+      })
     }
+    
     return () => {
       unsubRef.current?.(); unsubRef.current = null
       stompRef.current?.deactivate?.()
@@ -144,10 +160,16 @@ export default function App() {
     drawAll(updatedBp);
 
     if (tech === 'stomp' && stompRef.current?.connected) {
+      console.log('[STOMP] Enviando punto:', point)
       stompRef.current.publish({ destination: '/app/draw', body: JSON.stringify({ author, name, point }) })
-    } else if (tech === 'socketio' && socketRef.current?.connected) {
-      const room = `blueprints.${author}.${name}`
-      socketRef.current.emit('draw-event', { room, author, name, point })
+    } else if (tech === 'socketio') {
+      if (socketRef.current?.connected) {
+        const room = `blueprints.${author}.${name}`
+        console.log('[Socket.IO] Enviando punto a sala', room, ':', point)
+        socketRef.current.emit('draw-event', { room, author, name, point })
+      } else {
+        console.warn('[Socket.IO] Socket NO está conectado. Estado:', socketRef.current?.readyState)
+      }
     }
   }
 
