@@ -422,6 +422,47 @@ kill -9 [PID]
 
 **Causa:** CORS no esta configurado correctamente
 
+---
+
+## Evidencia y Demostraciones
+
+### Video de Prueba - Colaboracion en Tiempo Real
+
+Se ha grabado una demostracion funcional del sistema mostrando:
+
+- ✅ Conexión simultánea de dos usuarios (Socket.IO y STOMP)
+- ✅ Sincronización de puntos en tiempo real entre navegadores
+- ✅ Renderización en Canvas HTML5
+- ✅ API REST respondiendo correctamente
+
+**Video:** [Grabación de Prueba - Sincronización en Tiempo Real](./prueba.mp4)
+
+**Contenido de la demostración:**
+1. Inicio de dos sesiones del navegador
+2. Selección de tecnología (Socket.IO / STOMP)
+3. Búsqueda de planos por autor
+4. Apertura de un plano existente
+5. Dibujo simultáneo en ambas pestañas
+6. Verificación de sincronización en tiempo real
+
+---
+
+## Repositorios Asociados
+
+| Repositorio | Descripción |
+|-----------|-----------|
+| [Lab_P2_BluePrints_Java21_API_Security_JWT](https://github.com/AnaFiquitiva/Lab_P2_BluePrints_Java21_API_Security_JWT) | Backend Spring Boot con WebSocket y JWT |
+| [Lab_P3_BluePrints_React_UI](https://github.com/AnaFiquitiva/Lab_P3_BluePrints_React_UI) | Frontend React (versión previa sin WebSocket) |
+
+---
+
+## Autor
+
+**Ana Fiquitiva**  
+Escuela Colombiana de Ingeniería Julio Garavito  
+Arquitectura de Software (ARSW)  
+Email: ana.fiquitiva-p@mail.escuelaing.edu.co
+
 **Solucion:** Ya esta configurado en `server-io.js` y `WebSocketConfig.java`
 
 ---
